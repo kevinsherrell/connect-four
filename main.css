@@ -1,0 +1,44 @@
+*{
+    box-sizing: border-box;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#playArea{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+#gameBoard{
+    position: absolute;
+    left: 25%;
+    bottom: 10%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 50%;
+    min-height: 800px;
+    background-color: yellow;
+    border: none;
+    border-radius: 20px;
+}
+.row{
+    display: flex;
+    width: 100%;
+}
+.gameCell{
+    width: calc(100% / 7) ;
+   /*height: calc(100% / 6);*/
+    background-color: white;
+    border: none;
+    border-radius: 100%;
+    margin: 3px;
+}
+.gameCell.selected.red{
+    background-color: red;
+}
+.gameCell.selected.black{
+    background-color: black;
+}
