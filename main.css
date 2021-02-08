@@ -42,3 +42,20 @@
 .gameCell.selected.black{
     background-color: black;
 }
+
+/* Conditional rendering */
+#gameOver{
+    display: none;
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    min-width: 50%;
+    min-height: 50%;
+    background-color: deepskyblue;
+    border: none;
+    border-radius: 25px;
+    padding: 10px;
+}
+#gameOver.true{
+    display: initial;
+}
