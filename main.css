@@ -28,7 +28,7 @@
     display: flex;
     width: 100%;
 }
-.gameCell{
+.column{
     width: calc(100% / 7) ;
    /*height: calc(100% / 6);*/
     background-color: white;
@@ -36,10 +36,10 @@
     border-radius: 100%;
     margin: 3px;
 }
-.gameCell.selected.red{
+.column.selected.red{
     background-color: red;
 }
-.gameCell.selected.black{
+.column.selected.black{
     background-color: black;
 }
 
