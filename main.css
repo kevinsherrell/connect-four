@@ -7,8 +7,11 @@
 
 #playArea{
     position: relative;
+    opacity: 1;
+    transition: opacity 200ms ease-in;
     width: 100vw;
     height: 100vh;
+
 }
 
 #gameBoard{
@@ -44,7 +47,26 @@
 }
 
 /* Conditional rendering */
-#gameOver{
+.gameStart{
+    padding: 15px;
+    display: none;
+    position: absolute;
+    left: 25%;
+    top: 15%;
+    min-width: 50%;
+    min-height: 50%;
+    background-color: deepskyblue;
+    border: none;
+    border-radius: 25px;
+}
+.gameStart.true{
+    display: initial;
+}
+.gameStart img{
+    display: block;
+margin: auto;
+}
+#gameOverModal{
     display: none;
     position: absolute;
     top: 15%;
@@ -56,6 +78,13 @@
     border-radius: 25px;
     padding: 10px;
 }
-#gameOver.true{
+#gameOverModal.true{
     display: initial;
+}
+
+/*displays or hides gameboard when game is not started or has ended*/
+#playArea.gameOver{
+    display: none;
+    opacity: 0;
+    transition: opacity 200ms ease-out;
 }
