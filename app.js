@@ -124,6 +124,7 @@ let grid= [
     [-1,-1,-1,-1,-1,-1,-1],
     [-1,-1,-1,-1,-1,-1,-1]
 ]
+// Generate game board
 for(let i = 0; i < grid.length; i ++){
     let row = document.createElement("div");
     row.classList.add("row")
@@ -131,11 +132,20 @@ for(let i = 0; i < grid.length; i ++){
     for(let j = 0; j < grid[i].length; j++){
         let column = document.createElement("div");
         column.classList.add('column');
+        column.setAttribute('data-row', `${i}`);
         column.setAttribute('data-column', `${j}`);
         row.appendChild(column);
         console.log("working");
     }
     document.querySelector('#gameBoard').appendChild(row);
 }
-
+const cells = document.querySelectorAll('.column');
+cells.forEach((cell)=>{
+    cell.addEventListener('click', (e)=>{
+        let row = parseInt(cell.dataset.row);
+        let column = parseInt(cell.dataset.column);
+        grid[row][column] = 'selected';
+        console.log(grid);
+    })
+})
 
