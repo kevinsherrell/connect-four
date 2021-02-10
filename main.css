@@ -1,20 +1,21 @@
-*{
+* {
     box-sizing: border-box;
     font-family: sans-serif;
     margin: 0;
     padding: 0;
 }
 
-#playArea{
-    position: relative;
-    opacity: 1;
-    transition: opacity 200ms ease-in;
-    width: 100vw;
-    height: 100vh;
+/*#playArea {*/
+/*    position: relative;*/
+/*    */
+/*    width: 100vw;*/
+/*    height: 100vh;*/
 
-}
+/*}*/
 
-#gameBoard{
+#gameBoard {
+    opacity: 100%;
+    transition: opacity 2s ease-in;
     position: absolute;
     left: 25%;
     bottom: 10%;
@@ -27,46 +28,46 @@
     border: none;
     border-radius: 20px;
 }
-.row{
+
+.row {
     display: flex;
     width: 100%;
 }
-.column{
-    width: calc(100% / 7) ;
-   /*height: calc(100% / 6);*/
+
+.column {
+    width: calc(100% / 7);
+    /*height: calc(100% / 6);*/
     background-color: white;
     border: none;
     border-radius: 100%;
     margin: 3px;
 }
-.column.selected.red{
+
+.column.selected.red {
     background-color: red;
 }
-.column.selected.black{
+
+.column.selected.black {
     background-color: black;
 }
 
 /* Conditional rendering */
-.gameStart{
-    padding: 15px;
-    display: none;
-    position: absolute;
-    left: 25%;
-    top: 15%;
-    min-width: 50%;
-    min-height: 50%;
-    background-color: deepskyblue;
-    border: none;
-    border-radius: 25px;
+.startModal {
+   background: green;
+    width: 50%;
+    height: 500px;
 }
-.gameStart.true{
+
+.startModal.true {
     display: initial;
 }
-.gameStart img{
-    display: block;
-margin: auto;
+
+.startModal img {
+    /*display: block;*/
+    /*margin: auto;*/
 }
-#gameOverModal{
+
+#gameOverModal {
     display: none;
     position: absolute;
     top: 15%;
@@ -78,13 +79,17 @@ margin: auto;
     border-radius: 25px;
     padding: 10px;
 }
-#gameOverModal.true{
+
+#gameOverModal.true {
     display: initial;
 }
 
 /*displays or hides gameboard when game is not started or has ended*/
-#playArea.gameOver{
-    display: none;
+#playArea.gameOver {
     opacity: 0;
-    transition: opacity 200ms ease-out;
+}
+
+.startButton{
+    position: relative;
+    z-index: 1;
 }
