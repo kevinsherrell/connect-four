@@ -153,34 +153,76 @@ class Game {
     }
 
     check() {
-        // Horizontal
-        let horizontalResult = null;
-        if (horizontalResult === null) {
+        const checkHorizontal = () => {
             for (let row = 0; row < game.grid.length; row++) {
-                for (let column = 0; column < game.grid[row].length; column++) {
+                for (let column = 0; column < game.grid[row].length - 3; column++) {
                     let current = game.grid[row][column];
-                    let next = game.grid[row][column + 1];
-                    let next2 = game.grid[row][column + 2];
-                    let next3 = game.grid[row][column + 3];
+                    let nextColumn = game.grid[row][column + 1];
+                    let nextColumn2 = game.grid[row][column + 2];
+                    let nextColumn3 = game.grid[row][column + 3];
 
                     if (current !== 0) {
-                        if (current === next && current === next2 && current === next3) {
+                        if (current === game.grid[row][column + 1] &&
+                            current === game.grid[row][column + 2] &&
+                            current === game.grid[row][column + 3]) {
                             this.winner = current;
-
                         }
                     }
                 }
             }
+
+        }
+        const checkVertical = ()=>{
+            for (let row = 0; row < game.grid.length; row++) {
+                for (let column = 0; column < game.grid[row].length - 3; column++) {
+                    let current = game.grid[row][column];
+                    let nextColumn = game.grid[row][column + 1];
+                    let nextColumn2 = game.grid[row][column + 2];
+                    let nextColumn3 = game.grid[row][column + 3];
+
+                    if(current !== 0){
+                        if(current === game.grid[row - 1][column] &&
+                            current === game.grid[row - 2][column] &&
+                            current === game.grid[row - 3][column]){
+                            this.winner = current;
+                        }
+                    }
+                }
+            }
+
+        }
+        const checkDiagonalRight = ()=>{
+            for (let row = 0; row < game.grid.length; row++) {
+                for (let column = 0; column < game.grid[row].length; column++) {
+                    let current = game.grid[row][column];
+                    let nextColumn = game.grid[row][column + 1];
+                    let nextColumn2 = game.grid[row][column + 2];
+                    let nextColumn3 = game.grid[row][column + 3];
+
+                    if(current !== 0){
+                        if(current === game.grid[row - 1][nextColumn],
+                        current === game.grid[row - 2][nextColumn2],
+                        current === game.grid[row - 3][nextColumn3]){
+                            this.winner = current
+                            console.log(this.winner)
+                        }
+                    }
+                }
+            }
+
+        }
+        if (this.winner === null) {
+            checkHorizontal();
+            checkVertical();
+            checkDiagonalRight();
         }
         if (this.winner === 'red') {
             alert(`${player1.name} wins!!!!!`);
-        } else if(this.winner === 'black') {
+        } else if (this.winner === 'black') {
             alert(`${player2.name} wins!!!`);
         }
 
 
-
-        console.log("horizontal result: ", horizontalResult);
     }
 
     init() {
