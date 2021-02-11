@@ -89,7 +89,7 @@ class Game {
                 column.setAttribute('data-row', `${i}`);
                 column.setAttribute('data-column', `${j}`);
                 row.appendChild(column);
-                console.log("working");
+                // console.log("working");
             }
             this.gameBoard.appendChild(row);
         }
@@ -107,6 +107,8 @@ class Game {
                 let row = parseInt(cell.dataset.row);
                 let column = parseInt(cell.dataset.column);
                 game.currentPlayer.select(cell, row, column);
+                game.check(game.currentPlayer);
+
             })
         })
         //============================================================
@@ -131,15 +133,15 @@ class Game {
         document.querySelector('.nameInput').addEventListener('input', (e) => {
             e.preventDefault();
             this.nameValue = e.target.value;
-            console.log(e.target.value);
-            console.log(this.nameValue)
-            console.log(player1);
+            // console.log(e.target.value);
+            // console.log(this.nameValue)
+            // console.log(player1);
         })
         //==========================================
 
         // Start button functionality
         let startButton = document.querySelector('.startButton');
-        console.log(startButton);
+        // console.log(startButton);
         startButton.addEventListener('click', (e) => {
             e.preventDefault();
             game.start();
@@ -148,7 +150,41 @@ class Game {
         //===========================================================
     }
 
-    check
+    check(currentPlayer) {
+        // Horizontal
+        let redCountH = 0;
+        let blackCountH = 0;
+        for (let i = 0; i < game.grid.length; i++) {
+            // if (game.grid[i].toString().match(`${currentPlayer.color},${currentPlayer.color},${currentPlayer.color},${currentPlayer.color}`)) {
+            //     alert(`${game.currentPlayer.name} wins!!!!`);
+            // }
+            for (let j = 0; j < game.grid[i].length; j++) {
+                let current = game.grid[i][j];
+                let previous = game.grid[i][j - 1]
+                if (game.grid[i][j] === currentPlayer.color) {
+                    if (previous !== currentPlayer.color) {
+                        console.log(`${currentPlayer.color} no match`);
+                        if(currentPlayer.color === 'red'){
+                            redCountH = 0;
+                        }else if (currentPlayer.color === 'black'){
+                            blackCountH = 0;
+                        }
+                    }else if(previous === currentPlayer.color){
+
+                        if(currentPlayer.color === 'red'){
+                            redCountH++;
+                        }else if (currentPlayer.color === 'black'){
+                            blackCountH++;
+                        }console.log(`${currentPlayer.color} match!`);
+                    }
+                }
+            }
+        }
+        console.log(redCountH, blackCountH);
+        if (redCountH === 3 || blackCountH === 3) {
+            alert(`${game.currentPlayer.name} wins!!!!`);
+        }
+    }
 
     init() {
     }
@@ -176,7 +212,7 @@ class Player {
         if (element.classList.contains('selected')) {
             console.log('space has already been selected');
         } else if (element.dataset.row == 5 || game.grid[row + 1][column] != -1) {
-            game.grid[row][column] = 'selected';
+            game.grid[row][column] = game.currentPlayer.color;
             element.classList.add("selected")
             element.classList.add(game.currentPlayer.color);
             if (game.currentPlayer === player1) {
@@ -184,8 +220,8 @@ class Player {
             } else {
                 game.currentPlayer = player1;
             }
-            console.log(game.grid);
-            console.log(element)
+            // console.log(game.grid);
+            // console.log(element)
         }
     }
 };
@@ -196,7 +232,7 @@ const player1 = new Player('default', "red");
 const player2 = new Player('CPU', 'black');
 // Create game object
 game.currentPlayer = player1; // player1 always goes first.
-console.log(game.currentPlayer)
+// console.log(game.currentPlayer)
 game.generateStartModal();
 game.generateBoard();
 
