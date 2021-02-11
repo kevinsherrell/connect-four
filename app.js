@@ -22,13 +22,46 @@ class Game {
             [-1, -1, -1, -1, -1, -1, -1],
             [-1, -1, -1, -1, -1, -1, -1]
         ];
+        this.startModal = document.createElement('div');
         this.gameBoard = document.createElement('div');
+        this.nameValue = null;
     }
 
 
     start() {
         this.gameOver = false;
-        this.gameBoard.classList.toggle("gameOver");
+
+        // Submits player name
+        if (this.nameValue === null) {
+            player1.name = 'player1';
+        } else {
+            player1.name = this.nameValue;
+        }
+        // Resets input
+        document.querySelector('.nameInput').value = '';
+        this.startModal.classList.toggle('show');
+        const hiddenItems = document.querySelectorAll('.gameOver');
+        hiddenItems.forEach(item => {
+            if (item.classList.contains('gameOver')) {
+                item.classList.toggle("gameOver")
+            }
+        })
+        console.log(hiddenItems);
+
+        // add wins and losses
+        const player1info = document.querySelector('.player1');
+        player1info.innerHTML = `
+            <h3 class="player1Header">${player1.name}</h3>
+            <h4>Wins: ${player1.wins}</h4>
+        `
+        const player2info = document.querySelector('.player2');
+        player2info.innerHTML = `
+        
+            <h3 class="player2Header">${player2.name}</h3>
+            <h4>Wins: ${player2.wins}</h4>
+        
+`
+
 
     }
 
@@ -60,7 +93,7 @@ class Game {
         //===================================================================
 
         // append gameboard to play area and play area to body
-        document.body.appendChild(this.gameBoard);
+        document.querySelector('.gameContainer').appendChild(this.gameBoard);
         // document.body.appendChild(playArea);
         //====================================================================
 
@@ -77,6 +110,30 @@ class Game {
     }
 
     generateStartModal() {
+        this.startModal.classList.add("startModal");
+        this.startModal.classList.add("show");
+        this.startModal.innerHTML = `
+                <img src="./images/header_logo.png" alt="">
+                <div class="inputContainer">
+                    <h2>Please Enter Your Name</h2>
+                    <input type="text" class="nameInput">
+                    <button class="startButton">Start Game!</button>
+                </div>
+        `
+        // Add modal to dom
+        document.body.appendChild(this.startModal);
+        //========================================
+
+        // Add input listener to change player name.
+        document.querySelector('.nameInput').addEventListener('input', (e) => {
+            e.preventDefault();
+            this.nameValue = e.target.value;
+            console.log(e.target.value);
+            console.log(player1);
+        })
+        //==========================================
+
+        // Start button functionality
         let startButton = document.querySelector('.startButton');
         console.log(startButton);
         startButton.addEventListener('click', (e) => {
@@ -84,7 +141,7 @@ class Game {
             game.start();
             console.log('click working')
         })
-//============================================================
+        //===========================================================
     }
 
     check
@@ -97,7 +154,8 @@ class Game {
 
 class Player {
     constructor(name, color, wins, losses) {
-        this.name = name;
+        this.name = name || 'player1';
+
         this.color = color;
         this.wins = wins;
         this.losses = losses;
@@ -125,7 +183,7 @@ class Player {
 };
 
 // Create players
-const player1 = new Player('Kevin', 'red');
+const player1 = new Player();
 const player2 = new Player('cpu', 'black');
 // Create game object
 const game = new Game();
