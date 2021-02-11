@@ -150,6 +150,11 @@ body {
     margin: 30px auto;
 }
 
+.error{
+    color: red;
+    text-align: center;
+    padding: 10px;
+}
 
 #gameOverModal {
     position: absolute;

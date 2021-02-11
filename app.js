@@ -24,43 +24,47 @@ class Game {
         ];
         this.startModal = document.createElement('div');
         this.gameBoard = document.createElement('div');
-        this.nameValue = null;
+        this.nameValue = "";
     }
 
 
     start() {
         this.gameOver = false;
-
+        player1.name = this.nameValue;
         // Submits player name
-        if (this.nameValue === null) {
-            player1.name = 'player1';
-        } else {
-            player1.name = this.nameValue;
-        }
-        // Resets input
-        document.querySelector('.nameInput').value = '';
-        this.startModal.classList.toggle('show');
-        const hiddenItems = document.querySelectorAll('.gameOver');
-        hiddenItems.forEach(item => {
-            if (item.classList.contains('gameOver')) {
-                item.classList.toggle("gameOver")
-            }
-        })
-        console.log(hiddenItems);
+        if (this.nameValue.length !== 0) {
+            // Resets input
+            document.querySelector('.nameInput').value = '';
+            this.startModal.classList.toggle('show');
+            const hiddenItems = document.querySelectorAll('.gameOver');
+            hiddenItems.forEach(item => {
+                if (item.classList.contains('gameOver')) {
+                    item.classList.toggle("gameOver")
+                }
+            })
+            console.log(hiddenItems);
 
-        // add wins and losses
-        const player1info = document.querySelector('.player1');
-        player1info.innerHTML = `
+            // add wins and losses
+            const player1info = document.querySelector('.player1');
+            player1info.innerHTML = `
             <h3 class="player1Header">${player1.name}</h3>
             <h4>Wins: ${player1.wins}</h4>
+            <h4>Losses: ${player1.losses}</h4>
         `
-        const player2info = document.querySelector('.player2');
-        player2info.innerHTML = `
+            const player2info = document.querySelector('.player2');
+            player2info.innerHTML = `
         
             <h3 class="player2Header">${player2.name}</h3>
-            <h4>Wins: ${player2.wins}</h4>
-        
+            <h4>Wins: ${player2.wins}</h4>      
+            <h4>Losses: ${player2.losses}</h4>      
 `
+        }else{
+            const errorMessage = document.createElement('p');
+            errorMessage.classList.add('error');
+            errorMessage.innerText = "Must enter a name to continue";
+            document.querySelector('.inputContainer').appendChild(errorMessage);
+        }
+
 
 
     }
@@ -129,6 +133,7 @@ class Game {
             e.preventDefault();
             this.nameValue = e.target.value;
             console.log(e.target.value);
+            console.log(this.nameValue)
             console.log(player1);
         })
         //==========================================
@@ -148,17 +153,18 @@ class Game {
 
     init() {
     }
-
+    getNameInput(){
+        return this.nameValue;
+    }
 }
 
 
 class Player {
-    constructor(name, color, wins, losses) {
-        this.name = name || 'player1';
-
+    constructor(name,color) {
+        this.name = name;
         this.color = color;
-        this.wins = wins;
-        this.losses = losses;
+        this.wins = 0;
+        this.losses = 0;
     };
 
     select(element, row, column) {
@@ -182,12 +188,13 @@ class Player {
     }
 };
 
-// Create players
-const player1 = new Player();
-const player2 = new Player('cpu', 'black');
-// Create game object
 const game = new Game();
+// Create players
+const player1 = new Player('default',"red");
+const player2 = new Player('CPU', 'black');
+// Create game object
 game.currentPlayer = player1; // player1 always goes first.
+console.log(game.currentPlayer)
 game.generateStartModal();
 game.generateBoard();
 
