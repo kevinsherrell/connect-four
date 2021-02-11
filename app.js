@@ -161,21 +161,24 @@ class Game {
             for (let j = 0; j < game.grid[i].length; j++) {
                 let current = game.grid[i][j];
                 let previous = game.grid[i][j - 1]
+
+                // POSSIBLE ISSUE - LOGIC IS NOT ACCOUNTING FOR MOVES THAT HAVE A PREVIOUS VALUE THAT IS OF ANOTHER COLOR!
                 if (game.grid[i][j] === currentPlayer.color) {
                     if (previous !== currentPlayer.color) {
                         console.log(`${currentPlayer.color} no match`);
-                        if(currentPlayer.color === 'red'){
+                        if (currentPlayer.color === 'red') {
                             redCountH = 0;
-                        }else if (currentPlayer.color === 'black'){
+                        } else if (currentPlayer.color === 'black') {
                             blackCountH = 0;
                         }
-                    }else if(previous === currentPlayer.color){
+                    } else if (previous === currentPlayer.color) {
 
-                        if(currentPlayer.color === 'red'){
+                        if (currentPlayer.color === 'red') {
                             redCountH++;
-                        }else if (currentPlayer.color === 'black'){
+                        } else if (currentPlayer.color === 'black') {
                             blackCountH++;
-                        }console.log(`${currentPlayer.color} match!`);
+                        }
+                        console.log(`${currentPlayer.color} match!`);
                     }
                 }
             }
