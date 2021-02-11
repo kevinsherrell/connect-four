@@ -13,14 +13,14 @@ class Game {
     constructor() {
         this.currentPlayer = {};
         this.gameOver = true;
-        this.winner = "";
+        this.winner = null;
         this.grid = [
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1],
-            [-1, -1, -1, -1, -1, -1, -1]
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
         ];
         this.startModal = document.createElement('div');
         this.gameBoard = document.createElement('div');
@@ -106,8 +106,10 @@ class Game {
             cell.addEventListener('click', (e) => {
                 let row = parseInt(cell.dataset.row);
                 let column = parseInt(cell.dataset.column);
-                game.currentPlayer.select(cell, row, column);
-                game.check(game.currentPlayer);
+                if (this.winner === null) {
+                    game.currentPlayer.select(cell, row, column, game.check());
+                }
+                // game.check(game.currentPlayer);
 
             })
         })
@@ -150,43 +152,35 @@ class Game {
         //===========================================================
     }
 
-    check(currentPlayer) {
+    check() {
         // Horizontal
-        let redCountH = 0;
-        let blackCountH = 0;
-        for (let i = 0; i < game.grid.length; i++) {
-            // if (game.grid[i].toString().match(`${currentPlayer.color},${currentPlayer.color},${currentPlayer.color},${currentPlayer.color}`)) {
-            //     alert(`${game.currentPlayer.name} wins!!!!`);
-            // }
-            for (let j = 0; j < game.grid[i].length; j++) {
-                let current = game.grid[i][j];
-                let previous = game.grid[i][j - 1]
+        let horizontalResult = null;
+        if (horizontalResult === null) {
+            for (let row = 0; row < game.grid.length; row++) {
+                for (let column = 0; column < game.grid[row].length; column++) {
+                    let current = game.grid[row][column];
+                    let next = game.grid[row][column + 1];
+                    let next2 = game.grid[row][column + 2];
+                    let next3 = game.grid[row][column + 3];
 
-                // POSSIBLE ISSUE - LOGIC IS NOT ACCOUNTING FOR MOVES THAT HAVE A PREVIOUS VALUE THAT IS OF ANOTHER COLOR!
-                if (game.grid[i][j] === currentPlayer.color) {
-                    if (previous !== currentPlayer.color) {
-                        console.log(`${currentPlayer.color} no match`);
-                        if (currentPlayer.color === 'red') {
-                            redCountH = 0;
-                        } else if (currentPlayer.color === 'black') {
-                            blackCountH = 0;
-                        }
-                    } else if (previous === currentPlayer.color) {
+                    if (current !== 0) {
+                        if (current === next && current === next2 && current === next3) {
+                            this.winner = current;
 
-                        if (currentPlayer.color === 'red') {
-                            redCountH++;
-                        } else if (currentPlayer.color === 'black') {
-                            blackCountH++;
                         }
-                        console.log(`${currentPlayer.color} match!`);
                     }
                 }
             }
         }
-        console.log(redCountH, blackCountH);
-        if (redCountH === 3 || blackCountH === 3) {
-            alert(`${game.currentPlayer.name} wins!!!!`);
+        if (this.winner === 'red') {
+            alert(`${player1.name} wins!!!!!`);
+        } else if(this.winner === 'black') {
+            alert(`${player2.name} wins!!!`);
         }
+
+
+
+        console.log("horizontal result: ", horizontalResult);
     }
 
     init() {
@@ -206,7 +200,7 @@ class Player {
         this.losses = 0;
     };
 
-    select(element, row, column) {
+    select(element, row, column, check) {
         /*
          selection conditions (cell is selectable if....):
             selection is on bottom row (5) or...
@@ -214,7 +208,7 @@ class Player {
         */
         if (element.classList.contains('selected')) {
             console.log('space has already been selected');
-        } else if (element.dataset.row == 5 || game.grid[row + 1][column] != -1) {
+        } else if (element.dataset.row == 5 || game.grid[row + 1][column] != 0) {
             game.grid[row][column] = game.currentPlayer.color;
             element.classList.add("selected")
             element.classList.add(game.currentPlayer.color);
