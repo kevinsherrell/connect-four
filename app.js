@@ -172,7 +172,7 @@ class Game {
             }
 
         }
-        const checkVertical = ()=>{
+        const checkVertical = () => {
             for (let row = 0; row < game.grid.length; row++) {
                 for (let column = 0; column < game.grid[row].length - 3; column++) {
                     let current = game.grid[row][column];
@@ -180,10 +180,10 @@ class Game {
                     let nextColumn2 = game.grid[row][column + 2];
                     let nextColumn3 = game.grid[row][column + 3];
 
-                    if(current !== 0){
-                        if(current === game.grid[row - 1][column] &&
+                    if (current !== 0) {
+                        if (current === game.grid[row - 1][column] &&
                             current === game.grid[row - 2][column] &&
-                            current === game.grid[row - 3][column]){
+                            current === game.grid[row - 3][column]) {
                             this.winner = current;
                         }
                     }
@@ -191,18 +191,18 @@ class Game {
             }
 
         }
-        const checkDiagonalRight = ()=>{
-            for (let row = 0; row < game.grid.length; row++) {
-                for (let column = 0; column < game.grid[row].length; column++) {
+        const checkDiagonalRight = () => {
+            for (let row = 3; row < 6; row++) {
+                for (let column = 0; column < 4; column++) {
                     let current = game.grid[row][column];
                     let nextColumn = game.grid[row][column + 1];
                     let nextColumn2 = game.grid[row][column + 2];
                     let nextColumn3 = game.grid[row][column + 3];
 
-                    if(current !== 0){
-                        if(current === game.grid[row - 1][nextColumn],
+                    if (current !== 0) {
+                        if (current === game.grid[row - 1][nextColumn],
                         current === game.grid[row - 2][nextColumn2],
-                        current === game.grid[row - 3][nextColumn3]){
+                        current === game.grid[row - 3][nextColumn3]) {
                             this.winner = current
                             console.log(this.winner)
                         }
