@@ -12,7 +12,9 @@ for example:
 class Game {
     constructor() {
         this.currentPlayer = {};
-        this.gameOver = true;
+        this.gameStart = false;
+        this.gameEnd = false;
+        this.restart = false;
         this.winner = null;
         this.grid = [
             [0, 0, 0, 0, 0, 0, 0],
@@ -27,22 +29,32 @@ class Game {
         this.player1info = document.querySelector('.player1');
         this.player2info = document.querySelector('.player2');
         this.gameContainer = document.querySelector('.gameContainer');
+        this.gameOverModal = document.createElement('div');
         this.nameValue = "";
     }
 
 
     start() {
         this.gameOver = false;
+        this.gameStart = true;
         player1.name = this.nameValue;
         // Submits player name
         if (this.nameValue.length !== 0) {
             // Resets input
             document.querySelector('.nameInput').value = '';
-            this.startModal.classList.toggle('show');
-            const hiddenItems = document.querySelectorAll('.gameOver');
+            if (this.restart === true) {
+                this.startModal.classList.add('restart')
+            }
+            if (this.gameStart === true) {
+                this.startModal.classList.toggle('gameStart');
+            }
+            if (this.gameEnd === true) {
+                this.gameOverModal.classList.toggle('gameEnd');
+            }
+            const hiddenItems = document.querySelectorAll('.hide');
             hiddenItems.forEach(item => {
-                if (item.classList.contains('gameOver')) {
-                    item.classList.toggle("gameOver")
+                if (item.classList.contains('hide')) {
+                    item.classList.toggle("hide")
                 }
             })
             console.log(hiddenItems);
@@ -71,7 +83,8 @@ class Game {
     }
 
     end() {
-        this.gameOver = true;
+        this.gameEnd = true;
+        this.generateGameOverModal();
 
     };
 
@@ -88,7 +101,7 @@ class Game {
     generateBoard() {
         // generate game board/play area
         this.gameBoard.setAttribute('id', 'gameBoard');
-        this.gameBoard.classList.add("gameOver");
+        this.gameBoard.classList.add("hide");
         for (let i = 0; i < game.grid.length; i++) {
             let row = document.createElement("div");
             row.classList.add("row")
@@ -117,7 +130,8 @@ class Game {
                 let row = parseInt(cell.dataset.row);
                 let column = parseInt(cell.dataset.column);
                 if (this.winner === null) {
-                    game.currentPlayer.select(cell, row, column, game.check());
+                    game.currentPlayer.select(cell, row, column);
+                    this.check();
                 }
                 // game.check(game.currentPlayer);
 
@@ -128,7 +142,7 @@ class Game {
 
     generateStartModal() {
         this.startModal.classList.add("startModal");
-        this.startModal.classList.add("show");
+        // this.startModal.classList.add("show");
         this.startModal.innerHTML = `
                 <img src="./images/header_logo.png" alt="">
                 <div class="inputContainer">
@@ -162,10 +176,70 @@ class Game {
         //===========================================================
     }
 
+    generateGameOverModal() {
+        this.gameOverModal.classList.add("gameOverModal");
+        this.gameOverModal.classList.add("gameEnd");
+        this.gameOverModal.innerHTML = `
+                <img src="./images/header_logo.png" alt="">
+                <div class="inputContainer">
+                    <h2>${this.winner === 'red' ? player1.name : player2.name} wins!!!</h2>
+                    <button class="playAgain">Play Again!</button>
+                </div>
+        `
+        // Add modal to dom
+        document.body.appendChild(this.gameOverModal);
+        //========================================
+        //
+        // // Add input listener to change player name.
+        // document.querySelector('.nameInput').addEventListener('input', (e) => {
+        //     e.preventDefault();
+        //     this.nameValue = e.target.value;
+        //     // console.log(e.target.value);
+        //     // console.log(this.nameValue)
+        //     // console.log(player1);
+        // })
+        // //==========================================
+        // game over is to true
+
+        if (this.winner === "red") {
+            player1.wins++;
+            player2.losses++;
+        } else if (this.winner === 'black') {
+            player2.wins++;
+            player1.losses++;
+        }
+        // makes gameboard dissapear and resets board
+        this.reset();
+        // Start button functionality
+        let playAgain = document.querySelector('.playAgain');
+        // console.log(startButton);
+        playAgain.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.restart = true;
+            const selected = document.querySelectorAll('.selected');
+            selected.forEach(element => {
+                element.className = 'column';
+            })
+            this.grid = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+            ]
+            this.winner = null;
+            game.start();
+            console.log('click working')
+        })
+        //===========================================================
+    }
+
     check() {
+
         const checkHorizontal = () => {
-            for (let row = 0; row < this.grid.length; row++) {
-                for (let column = 0; column < this.grid[row].length - 3; column++) {
+            for (let row = 0; row < 6; row++) {
+                for (let column = 0; column < 4; column++) {
                     let current = this.grid[row][column];
                     let nextColumn = this.grid[row][column + 1];
                     let nextColumn2 = this.grid[row][column + 2];
@@ -176,6 +250,7 @@ class Game {
                             current === this.grid[row][column + 2] &&
                             current === this.grid[row][column + 3]) {
                             this.winner = current;
+                            this.end()
                         }
                     }
                 }
@@ -183,18 +258,19 @@ class Game {
 
         }
         const checkVertical = () => {
-            for (let row = 0; row < this.grid.length; row++) {
-                for (let column = 0; column < this.grid[row].length - 3; column++) {
+            for (let row = 0; row < 3; row++) {
+                for (let column = 0; column < 7; column++) {
                     let current = this.grid[row][column];
                     let nextColumn = this.grid[row][column + 1];
                     let nextColumn2 = this.grid[row][column + 2];
                     let nextColumn3 = this.grid[row][column + 3];
 
                     if (current !== 0 && this.grid[row] !== this.grid.length) {
-                        if (current === this.grid[row - 1][column] &&
-                            current === this.grid[row - 2][column] &&
-                            current === this.grid[row - 3][column]) {
+                        if (current === this.grid[row + 1][column] &&
+                            current === this.grid[row + 2][column] &&
+                            current === this.grid[row + 3][column]) {
                             this.winner = current;
+                            this.end();
                         }
                     }
                 }
@@ -202,8 +278,29 @@ class Game {
 
         }
         const checkDiagonalRight = () => {
-            for (let row = 3; row < this.grid.length; row++) {
-                for (let column = 0; column < 3; column++) {
+            for (let row = 0; row < 3; row++) {
+                for (let column = 0; column <= 4; column++) {
+                    let current = this.grid[row][column];
+                    let nextColumn = this.grid[row][column + 1];
+                    let nextColumn2 = this.grid[row][column + 2];
+                    let nextColumn3 = this.grid[row][column + 3];
+
+                    if (current !== 0) {
+                        if (current === this.grid[row + 1][nextColumn],
+                        current === this.grid[row + 2][nextColumn2],
+                        current === this.grid[row + 3][nextColumn3]) {
+                            this.winner = current
+                            this.end();
+                            console.log(this.winner)
+                        }
+                    }
+                }
+            }
+
+        }
+        const checkDiagonalLeft = () => {
+            for (let row = 3; row < 6; row++) {
+                for (let column = 0; column <= 4; column++) {
                     let current = this.grid[row][column];
                     let nextColumn = this.grid[row][column + 1];
                     let nextColumn2 = this.grid[row][column + 2];
@@ -214,23 +311,28 @@ class Game {
                         current === this.grid[row - 2][nextColumn2],
                         current === this.grid[row - 3][nextColumn3]) {
                             this.winner = current
+                            this.end();
                             console.log(this.winner)
                         }
                     }
                 }
             }
-
         }
         if (this.winner === null) {
             checkHorizontal();
+            console.log(this.grid)
             checkVertical();
+            console.log(this.grid)
             checkDiagonalRight();
+            console.log(this.grid)
+            checkDiagonalLeft();
+            console.log(this.grid)
         }
-        if (this.winner === 'red') {
-            alert(`${player1.name} wins!!!!!`);
-        } else if (this.winner === 'black') {
-            alert(`${player2.name} wins!!!`);
-        }
+        // if (this.winner === 'red') {
+        //     alert(`${player1.name} wins!!!!!`);
+        // } else if (this.winner === 'black') {
+        //     alert(`${player2.name} wins!!!`);
+        // }
 
 
     }
