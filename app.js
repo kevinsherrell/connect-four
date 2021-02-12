@@ -155,7 +155,7 @@ class Game {
         document.body.appendChild(this.startModal);
         //========================================
 
-        // Add input listener to change player name.
+        // Add input listener to change player name..
         document.querySelector('.nameInput').addEventListener('input', (e) => {
             e.preventDefault();
             this.nameValue = e.target.value;
