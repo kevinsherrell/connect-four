@@ -1,4 +1,3 @@
-
 // Classes
 class Game {
     constructor() {
@@ -36,12 +35,19 @@ class Game {
             if (this.restart === true) {
                 this.startModal.classList.add('restart')
             }
-            if (this.gameStart === true) {
+            if (this.gameStart === true ) {
                 this.startModal.classList.toggle('gameStart');
+                this.player1info.classList.toggle('gameEnd');
+                console.log(this.player1info);
+                this.player2info.classList.toggle('gameEnd');
+                console.log(this.player2info);
+                this.gameContainer.classList.toggle('gameEnd');
             }
             if (this.gameEnd === true) {
                 this.gameOverModal.classList.toggle('gameEnd');
             }
+
+            console.log(this.gameContainer);
             const hiddenItems = document.querySelectorAll('.hide');
             hiddenItems.forEach(item => {
                 if (item.classList.contains('hide')) {
@@ -75,17 +81,40 @@ class Game {
 
     end() {
         this.gameEnd = true;
+        console.log(this.gameContainer);
+        this.player1info.classList.toggle('gameEnd');
+        console.log(this.player1info);
+        this.player2info.classList.toggle('gameEnd');
+        console.log(this.player2info);
+        this.gameContainer.classList.toggle('gameEnd');
         this.generateGameOverModal();
 
     };
 
     reset() {
-        this.player1info.classList.toggle('gameOver');
+        this.player1info.classList.toggle('gameEnd');
         console.log(this.player1info);
-        this.player2info.classList.toggle('gameOver');
+        this.player2info.classList.toggle('gameEnd');
         console.log(this.player2info);
-        this.gameContainer.classList.toggle('gameOver');
+        this.gameContainer.classList.toggle('gameEnd');
         console.log(this.gameContainer);
+
+        this.restart = true;
+        this.gameStart = true;
+        const selected = document.querySelectorAll('.selected');
+        selected.forEach(element => {
+            element.className = 'column';
+        })
+        this.grid = [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+        ]
+        this.winner = null;
+        game.start();
 
     }
 
@@ -181,27 +210,18 @@ class Game {
             player1.losses++;
         }
         // makes gameboard dissapear and resets board
-        this.reset();
         // Start button functionality
         let playAgain = document.querySelector('.playAgain');
         // console.log(startButton);
         playAgain.addEventListener('click', (e) => {
             e.preventDefault();
-            this.restart = true;
-            const selected = document.querySelectorAll('.selected');
-            selected.forEach(element => {
-                element.className = 'column';
-            })
-            this.grid = [
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-            ]
-            this.winner = null;
-            game.start();
+            this.player1info.classList.toggle('gameEnd');
+            console.log(this.player1info);
+            this.player2info.classList.toggle('gameEnd');
+            console.log(this.player2info);
+            this.gameContainer.classList.toggle('gameEnd');
+            this.reset();
+
             console.log('click working')
         })
         //===========================================================

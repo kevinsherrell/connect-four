@@ -174,8 +174,8 @@ body {
 #gameBoard.hide {
     opacity: 0;
 }
-.player1.hide,
-.player2.hide,
-.gameContainer.hide{
+.player1.gameEnd,
+.player2.gameEnd,
+.gameContainer.gameEnd{
     opacity: 0;
 }
