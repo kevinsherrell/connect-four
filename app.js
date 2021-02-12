@@ -1,12 +1,3 @@
-/*
-todo for each row in the grid generate a div with a className of "row" and an attribute of "data-row: " and a value of the index of the row;
-todo inside of the row generate 7 div with className of "column" and an attribute of "data-column: " and a value of the index of the column;
-todo when a grid cell is selected (player 1: red, player 2: black), change the corresponding value of the row/column based upon the data of the cell selected.
-for example:
-    you select a div with a data attribute of data-column: 0 and a parent element with an attribute of data-row: 0,
-    you will then change grid[data-row][data-column] to 0 for player1; or 1 for player 2;
-
-* */
 
 // Classes
 class Game {
@@ -112,15 +103,13 @@ class Game {
                 column.setAttribute('data-row', `${i}`);
                 column.setAttribute('data-column', `${j}`);
                 row.appendChild(column);
-                // console.log("working");
             }
             this.gameBoard.appendChild(row);
         }
         //===================================================================
 
-        // append gameboard to play area and play area to body
+        // append game board to play area and play area to body
         document.querySelector('.gameContainer').appendChild(this.gameBoard);
-        // document.body.appendChild(playArea);
         //====================================================================
 
         // add event listener to each cell
@@ -133,7 +122,6 @@ class Game {
                     game.currentPlayer.select(cell, row, column);
                     this.check();
                 }
-                // game.check(game.currentPlayer);
 
             })
         })
@@ -159,15 +147,11 @@ class Game {
         document.querySelector('.nameInput').addEventListener('input', (e) => {
             e.preventDefault();
             this.nameValue = e.target.value;
-            // console.log(e.target.value);
-            // console.log(this.nameValue)
-            // console.log(player1);
         })
         //==========================================
 
         // Start button functionality
         let startButton = document.querySelector('.startButton');
-        // console.log(startButton);
         startButton.addEventListener('click', (e) => {
             e.preventDefault();
             game.start();
@@ -189,18 +173,6 @@ class Game {
         // Add modal to dom
         document.body.appendChild(this.gameOverModal);
         //========================================
-        //
-        // // Add input listener to change player name.
-        // document.querySelector('.nameInput').addEventListener('input', (e) => {
-        //     e.preventDefault();
-        //     this.nameValue = e.target.value;
-        //     // console.log(e.target.value);
-        //     // console.log(this.nameValue)
-        //     // console.log(player1);
-        // })
-        // //==========================================
-        // game over is to true
-
         if (this.winner === "red") {
             player1.wins++;
             player2.losses++;
@@ -328,17 +300,8 @@ class Game {
             checkDiagonalLeft();
             console.log(this.grid)
         }
-        // if (this.winner === 'red') {
-        //     alert(`${player1.name} wins!!!!!`);
-        // } else if (this.winner === 'black') {
-        //     alert(`${player2.name} wins!!!`);
-        // }
-
-
     }
 
-    init() {
-    }
 
     getNameInput() {
         return this.nameValue;
@@ -371,8 +334,6 @@ class Player {
             } else {
                 game.currentPlayer = player1;
             }
-            // console.log(game.grid);
-            // console.log(element)
         }
     }
 };
@@ -383,13 +344,5 @@ const player1 = new Player('default', "red");
 const player2 = new Player('CPU', 'black');
 // Create game object
 game.currentPlayer = player1; // player1 always goes first.
-// console.log(game.currentPlayer)
 game.generateStartModal();
 game.generateBoard();
-
-/*
-Horizontal check logic:
-    if row at index is equal to row at index + 1 add 1 to count
-        if count equals 3 current player wins
-            if row at index is not equal to row at index + 1 count is reset to zero;
- */
