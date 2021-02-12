@@ -24,6 +24,9 @@ class Game {
         ];
         this.startModal = document.createElement('div');
         this.gameBoard = document.createElement('div');
+        this.player1info = document.querySelector('.player1');
+        this.player2info = document.querySelector('.player2');
+        this.gameContainer = document.querySelector('.gameContainer');
         this.nameValue = "";
     }
 
@@ -45,14 +48,13 @@ class Game {
             console.log(hiddenItems);
 
             // add wins and losses
-            const player1info = document.querySelector('.player1');
-            player1info.innerHTML = `
+
+            this.player1info.innerHTML = `
             <h3 class="playerHeader">${player1.name}</h3>
             <h4>Wins: ${player1.wins}</h4>
             <h4>Losses: ${player1.losses}</h4>
         `
-            const player2info = document.querySelector('.player2');
-            player2info.innerHTML = `
+            this.player2info.innerHTML = `
         
             <h3 class="playerHeader">${player2.name}</h3>
             <h4>Wins: ${player2.wins}</h4>      
@@ -70,9 +72,17 @@ class Game {
 
     end() {
         this.gameOver = true;
+
     };
 
     reset() {
+        this.player1info.classList.toggle('gameOver');
+        console.log(this.player1info);
+        this.player2info.classList.toggle('gameOver');
+        console.log(this.player2info);
+        this.gameContainer.classList.toggle('gameOver');
+        console.log(this.gameContainer);
+
     }
 
     generateBoard() {
@@ -154,17 +164,17 @@ class Game {
 
     check() {
         const checkHorizontal = () => {
-            for (let row = 0; row < game.grid.length; row++) {
-                for (let column = 0; column < game.grid[row].length - 3; column++) {
-                    let current = game.grid[row][column];
-                    let nextColumn = game.grid[row][column + 1];
-                    let nextColumn2 = game.grid[row][column + 2];
-                    let nextColumn3 = game.grid[row][column + 3];
+            for (let row = 0; row < this.grid.length; row++) {
+                for (let column = 0; column < this.grid[row].length - 3; column++) {
+                    let current = this.grid[row][column];
+                    let nextColumn = this.grid[row][column + 1];
+                    let nextColumn2 = this.grid[row][column + 2];
+                    let nextColumn3 = this.grid[row][column + 3];
 
                     if (current !== 0) {
-                        if (current === game.grid[row][column + 1] &&
-                            current === game.grid[row][column + 2] &&
-                            current === game.grid[row][column + 3]) {
+                        if (current === this.grid[row][column + 1] &&
+                            current === this.grid[row][column + 2] &&
+                            current === this.grid[row][column + 3]) {
                             this.winner = current;
                         }
                     }
@@ -173,17 +183,17 @@ class Game {
 
         }
         const checkVertical = () => {
-            for (let row = 0; row < game.grid.length; row++) {
-                for (let column = 0; column < game.grid[row].length - 3; column++) {
-                    let current = game.grid[row][column];
-                    let nextColumn = game.grid[row][column + 1];
-                    let nextColumn2 = game.grid[row][column + 2];
-                    let nextColumn3 = game.grid[row][column + 3];
+            for (let row = 0; row < this.grid.length; row++) {
+                for (let column = 0; column < this.grid[row].length - 3; column++) {
+                    let current = this.grid[row][column];
+                    let nextColumn = this.grid[row][column + 1];
+                    let nextColumn2 = this.grid[row][column + 2];
+                    let nextColumn3 = this.grid[row][column + 3];
 
-                    if (current !== 0) {
-                        if (current === game.grid[row - 1][column] &&
-                            current === game.grid[row - 2][column] &&
-                            current === game.grid[row - 3][column]) {
+                    if (current !== 0 && this.grid[row] !== this.grid.length) {
+                        if (current === this.grid[row - 1][column] &&
+                            current === this.grid[row - 2][column] &&
+                            current === this.grid[row - 3][column]) {
                             this.winner = current;
                         }
                     }
@@ -192,17 +202,17 @@ class Game {
 
         }
         const checkDiagonalRight = () => {
-            for (let row = 3; row < 6; row++) {
-                for (let column = 0; column < 4; column++) {
-                    let current = game.grid[row][column];
-                    let nextColumn = game.grid[row][column + 1];
-                    let nextColumn2 = game.grid[row][column + 2];
-                    let nextColumn3 = game.grid[row][column + 3];
+            for (let row = 3; row < this.grid.length; row++) {
+                for (let column = 0; column < 3; column++) {
+                    let current = this.grid[row][column];
+                    let nextColumn = this.grid[row][column + 1];
+                    let nextColumn2 = this.grid[row][column + 2];
+                    let nextColumn3 = this.grid[row][column + 3];
 
                     if (current !== 0) {
-                        if (current === game.grid[row - 1][nextColumn],
-                        current === game.grid[row - 2][nextColumn2],
-                        current === game.grid[row - 3][nextColumn3]) {
+                        if (current === this.grid[row - 1][nextColumn],
+                        current === this.grid[row - 2][nextColumn2],
+                        current === this.grid[row - 3][nextColumn3]) {
                             this.winner = current
                             console.log(this.winner)
                         }
