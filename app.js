@@ -151,7 +151,7 @@ class Game {
                     <button class="startButton">Start Game!</button>
                 </div>
         `
-        // Add modal to dom
+        // Add modal to dom.
         document.body.appendChild(this.startModal);
         //========================================
 
