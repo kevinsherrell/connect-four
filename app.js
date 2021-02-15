@@ -35,26 +35,26 @@ class Game {
             if (this.restart === true) {
                 this.startModal.classList.add('restart')
             }
-            if (this.gameStart === true ) {
+            if (this.gameStart === true) {
                 this.startModal.classList.toggle('gameStart');
                 this.player1info.classList.toggle('gameEnd');
-                console.log(this.player1info);
+                // console.log(this.player1info);
                 this.player2info.classList.toggle('gameEnd');
-                console.log(this.player2info);
+                // console.log(this.player2info);
                 this.gameContainer.classList.toggle('gameEnd');
             }
             if (this.gameEnd === true) {
                 this.gameOverModal.classList.toggle('gameEnd');
             }
 
-            console.log(this.gameContainer);
+            // console.log(this.gameContainer);
             const hiddenItems = document.querySelectorAll('.hide');
             hiddenItems.forEach(item => {
                 if (item.classList.contains('hide')) {
                     item.classList.toggle("hide")
                 }
             })
-            console.log(hiddenItems);
+            // console.log(hiddenItems);
 
             // add wins and losses
 
@@ -184,7 +184,7 @@ class Game {
         startButton.addEventListener('click', (e) => {
             e.preventDefault();
             game.start();
-            console.log('click working')
+            // console.log('click working')
         })
         //===========================================================
     }
@@ -227,97 +227,111 @@ class Game {
         //===========================================================
     }
 
+    checkHorizontal = () => {
+        console.log("Horizontal check started")
+        for (let row = 5; row >= 0; row--) {
+            for (let column = 0; column < 4; column++) {
+                let current = this.grid[row][column];
+                let nextColumn = column + 1;
+                let nextColumn2 = column + 2;
+                let nextColumn3 = column + 3;
+
+                if (current !== 0) {
+                    if (current === this.grid[row][column + 1] &&
+                        current === this.grid[row][column + 2] &&
+                        current === this.grid[row][column + 3]) {
+                        console.log("HORIZONTAL WIN REGISTERED");
+
+                        this.winner = current;
+                        this.end()
+                    }
+                }
+            }
+        }
+
+    }
+    checkVertical = () => {
+        console.log("vertical Check Started")
+
+        for (let row = 5; row > 2; row--) {
+            for (let column = 0; column < 7; column++) {
+                let current = this.grid[row][column];
+                let nextColumn = this.grid[row][column + 1];
+                let nextColumn2 = this.grid[row][column + 2];
+                let nextColumn3 = this.grid[row][column + 3];
+
+                if (current !== 0 && this.grid[row] !== this.grid.length) {
+                    if (current === this.grid[row - 1][column] &&
+                        current === this.grid[row - 2][column] &&
+                        current === this.grid[row - 3][column]) {
+                        console.log("VERTICAL WIN REGISTERED");
+                        this.winner = current;
+                        this.end();
+                    }
+                }
+            }
+        }
+
+    }
+    checkDiagonalRight = () => {
+        console.log("right Diagonal Check Started")
+
+        for (let row = 5; row > 2; row--) {
+            for (let column = 0; column < 4; column++) {
+                console.log(game.grid[row][column], game.grid[row]);
+                let current = this.grid[row][column];
+                if (current !== 0) {
+                    if (current === this.grid[row - 1][column + 1],
+                    current === this.grid[row - 2][column + 2],
+                    current === this.grid[row - 3][column + 3]) {
+                        console.log("DIAGONAL RIGHT WIN REGISTERED");
+                        this.winner = current
+                        this.end();
+                        console.log(this.winner)
+                    }
+                }
+            }
+        }
+
+    }
+    checkDiagonalLeft = () => {
+        for (let row = 5; row > 2; row--) {
+            console.log("left Diagonal Check Started")
+            for (let column = 6; column > 2; column--) {
+
+                let current = this.grid[row][column];
+                let prevColumn = column - 1;
+                let prevColumn2 = column - 2;
+                let prevColumn3 = column - 3;
+
+                if (current !== 0) {
+                    if (current === this.grid[row - 1][prevColumn],
+                    current === this.grid[row - 2][prevColumn2],
+                    current === this.grid[row - 3][prevColumn3]) {
+                        console.log("DIAGONAL LEFT WIN REGISTERED");
+                        this.winner = current
+                        this.end();
+                        console.log(this.winner)
+                    }
+
+
+                }
+                console.log(column, game.grid[column])
+            }
+        }
+
+    }
+
     check() {
-
-        const checkHorizontal = () => {
-            for (let row = 0; row < 6; row++) {
-                for (let column = 0; column < 4; column++) {
-                    let current = this.grid[row][column];
-                    let nextColumn = this.grid[row][column + 1];
-                    let nextColumn2 = this.grid[row][column + 2];
-                    let nextColumn3 = this.grid[row][column + 3];
-
-                    if (current !== 0) {
-                        if (current === this.grid[row][column + 1] &&
-                            current === this.grid[row][column + 2] &&
-                            current === this.grid[row][column + 3]) {
-                            this.winner = current;
-                            this.end()
-                        }
-                    }
-                }
-            }
-
-        }
-        const checkVertical = () => {
-            for (let row = 0; row < 3; row++) {
-                for (let column = 0; column < 7; column++) {
-                    let current = this.grid[row][column];
-                    let nextColumn = this.grid[row][column + 1];
-                    let nextColumn2 = this.grid[row][column + 2];
-                    let nextColumn3 = this.grid[row][column + 3];
-
-                    if (current !== 0 && this.grid[row] !== this.grid.length) {
-                        if (current === this.grid[row + 1][column] &&
-                            current === this.grid[row + 2][column] &&
-                            current === this.grid[row + 3][column]) {
-                            this.winner = current;
-                            this.end();
-                        }
-                    }
-                }
-            }
-
-        }
-        const checkDiagonalRight = () => {
-            for (let row = 0; row < 3; row++) {
-                for (let column = 0; column <= 4; column++) {
-                    let current = this.grid[row][column];
-                    let nextColumn = this.grid[row][column + 1];
-                    let nextColumn2 = this.grid[row][column + 2];
-                    let nextColumn3 = this.grid[row][column + 3];
-
-                    if (current !== 0) {
-                        if (current === this.grid[row + 1][nextColumn],
-                        current === this.grid[row + 2][nextColumn2],
-                        current === this.grid[row + 3][nextColumn3]) {
-                            this.winner = current
-                            this.end();
-                            console.log(this.winner)
-                        }
-                    }
-                }
-            }
-
-        }
-        const checkDiagonalLeft = () => {
-            for (let row = 3; row < 6; row++) {
-                for (let column = 0; column <= 4; column++) {
-                    let current = this.grid[row][column];
-                    let nextColumn = this.grid[row][column + 1];
-                    let nextColumn2 = this.grid[row][column + 2];
-                    let nextColumn3 = this.grid[row][column + 3];
-
-                    if (current !== 0) {
-                        if (current === this.grid[row - 1][nextColumn],
-                        current === this.grid[row - 2][nextColumn2],
-                        current === this.grid[row - 3][nextColumn3]) {
-                            this.winner = current
-                            this.end();
-                            console.log(this.winner)
-                        }
-                    }
-                }
-            }
-        }
+        console.log(this.winner);
         if (this.winner === null) {
-            checkHorizontal();
+            this.checkHorizontal();
             console.log(this.grid)
-            checkVertical();
+            this.checkVertical();
             console.log(this.grid)
-            checkDiagonalRight();
+            this.checkDiagonalRight();
             console.log(this.grid)
-            checkDiagonalLeft();
+            this.checkDiagonalLeft();
             console.log(this.grid)
         }
     }
@@ -366,3 +380,9 @@ const player2 = new Player('CPU', 'black');
 game.currentPlayer = player1; // player1 always goes first.
 game.generateStartModal();
 game.generateBoard();
+
+/*
+row 3 should be excluded from diagonal as there are not enough cells for comparison. this applies to left and right side
+
+starting at row 6 we need to
+ */
