@@ -149,11 +149,14 @@ class Game {
             this.checkDiagonalLeft();
         }
         if (this.winner) {
-            this.calculateScore();
-            this.updatePlayerInfo();
-            this.end();
-            this.updateGameOverModal();
-            gameOverModal.classList.toggle('gameEnd');
+            //todo find a way to play sound for five seconds before modal appears
+            setTimeout(() => {
+                this.calculateScore();
+                this.updatePlayerInfo();
+                this.end();
+                this.updateGameOverModal();
+                gameOverModal.classList.toggle('gameEnd');
+            }, 5000)
         }
     }
 
