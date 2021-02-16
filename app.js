@@ -14,6 +14,7 @@ class Game {
             [0, 0, 0, 0, 0, 0, 0],
         ];
         this.nameValue = '';
+        this.error = false;
     }
 
     start(callback) {
@@ -255,11 +256,27 @@ document.querySelector('.nameInput').addEventListener('input', e => {
 
 document.querySelector('.startButton').addEventListener('click', e => {
     e.preventDefault();
-    player1info.classList.toggle("gameEnd");
-    player2info.classList.toggle("gameEnd");
-    gameContainer.classList.toggle("gameEnd");
-    startModal.classList.toggle("gameStart");
-    game.start();
+    if (game.nameValue.length > 0 && game.error !== true) {
+        player1info.classList.toggle("gameEnd");
+        player2info.classList.toggle("gameEnd");
+        gameContainer.classList.toggle("gameEnd");
+        startModal.classList.toggle("gameStart");
+        game.start();
+    } else {
+        let intervalID;
+        const errorMessage = document.createElement('P');
+        errorMessage.classList.add('error');
+        errorMessage.textContent = "Please enter a name to play the game";
+        const showError = () => {
+            startModal.appendChild(errorMessage);
+        }
+        showError();
+        setTimeout(() => {
+            document.querySelector('.error').remove();
+        }, 5000)
+
+
+    }
 })
 //====================================================================
 
@@ -269,4 +286,8 @@ document.querySelector('.playAgain').addEventListener('click', e => {
     e.preventDefault();
     game.reset();
     game.start();
+})
+document.querySelector('.endGameButton').addEventListener('click', e=>{
+    game.reset();
+    startModal.classList.toggle("gameStart");
 })
