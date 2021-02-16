@@ -3,6 +3,7 @@ class Game {
         this.currentPlayer = currentPlayer;
         this.gameStart = false;
         this.gameEnd = false;
+        this.gameOver = false;
         this.restart = false;
         this.winner = null;
         this.grid = [
@@ -31,6 +32,11 @@ class Game {
         this.gameEnd = true;
     }
 
+    init() {
+        player1.reset();
+        player2.reset();
+    }
+
     reset() {
         this.winner = null;
         this.grid = [
@@ -41,9 +47,17 @@ class Game {
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0],
         ]
-        player1info.classList.toggle("gameEnd");
-        player2info.classList.toggle("gameEnd");
-        gameContainer.classList.toggle("gameEnd");
+        if (this.gameOver !== true) {
+            this.toggleClass(
+                [player1info,
+                    player2info,
+                    gameContainer
+                ],
+                "gameEnd"
+            )
+        } else if (this.gameOver === true) {
+            this.currentPlayer = player1;
+        }
         gameOverModal.classList.toggle('gameEnd');
         document.querySelectorAll('.selected').forEach(element => {
             element.classList.toggle('selected');
@@ -185,6 +199,13 @@ class Player {
         this.losses = 0;
     }
 
+    reset() {
+        this.name = "";
+        this.wins = 0;
+        this.losses = 0;
+        player2.name = "cpu";
+    }
+
     select(element, row, column) {
         /*
          selection conditions (cell is selectable if....):
@@ -257,11 +278,15 @@ document.querySelector('.nameInput').addEventListener('input', e => {
 document.querySelector('.startButton').addEventListener('click', e => {
     e.preventDefault();
     if (game.nameValue.length > 0 && game.error !== true) {
-        player1info.classList.toggle("gameEnd");
-        player2info.classList.toggle("gameEnd");
-        gameContainer.classList.toggle("gameEnd");
-        startModal.classList.toggle("gameStart");
+        game.toggleClass(
+            [player1info,
+                player2info,
+                gameContainer],
+            'gameEnd'
+        );
+        game.toggleClass([startModal], 'gameStart');
         game.start();
+        document.querySelector('.nameInput').value = "";
     } else {
         let intervalID;
         const errorMessage = document.createElement('P');
@@ -287,7 +312,12 @@ document.querySelector('.playAgain').addEventListener('click', e => {
     game.reset();
     game.start();
 })
-document.querySelector('.endGameButton').addEventListener('click', e=>{
+document.querySelector('.endGameButton').addEventListener('click', e => {
+    game.gameOver = true;
+    player1.reset();
+    player2.reset();
     game.reset();
-    startModal.classList.toggle("gameStart");
+    setTimeout(() => {
+        startModal.classList.toggle("gameStart");
+    }, 1000)
 })

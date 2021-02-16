@@ -106,7 +106,9 @@ body {
 }
 
 .startButton,
-.playAgain{
+.playAgain,
+.endGameButton{
+    margin-bottom: 10px;
     width: 100%;
     height: 25px;
     border: none;
@@ -116,7 +118,8 @@ body {
 }
 
 .startButton:hover ,
-.playAgain:hover{
+.playAgain:hover,
+.endGameButton:hover{
     background-color: rgb(189, 79, 65);
     transition: background-color 150ms ease-in;
     color: white;
@@ -138,7 +141,7 @@ body {
     padding-top: 2%;
     border: none;
     border-radius: 25px;
-    transition: left 1s ease-out;
+    transition: left 100ms ease-out;
 }
 
 .startModal,
