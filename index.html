@@ -10,13 +10,33 @@
 </head>
 <body>
 <div class="player1 gameEnd">
+    <h3 class="playerHeader player1Header"></h3>
+    <h4 class="player1wins"></h4>
+    <h4 class="player1losses"></h4>
 </div>
 <div class="gameContainer gameEnd">
     <img class="gameHeader" src="./images/header_logo.png" alt="">
 </div>
 <div class="player2 gameEnd">
+    <h3 class="playerHeader player2Header"></h3>
+    <h4 class="player2wins"></h4>
+    <h4 class="player2losses"></h4>
 </div>
-
+<div class="gameOverModal">
+    <img src="./images/header_logo.png" alt="">
+    <div class="inputContainer">
+        <h2 class="displayWinner"></h2>
+        <button class="playAgain">Play Again!</button>
+    </div>
+</div>
+<div class="startModal">
+    <img src="./images/header_logo.png" alt="">
+    <div class="inputContainer">
+        <h2>Please Enter Your Name</h2>
+        <input type="text" class="nameInput">
+        <button class="startButton">Start Game!</button>
+    </div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>
