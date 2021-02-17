@@ -171,7 +171,7 @@ class Game {
                 this.end();
                 this.updateGameOverModal();
                 gameOverModal.classList.toggle('gameEnd');
-            }, 5000)
+            }, 1500)
         }
     }
 
@@ -203,7 +203,7 @@ class Player {
         this.name = "";
         this.wins = 0;
         this.losses = 0;
-        player2.name = "cpu";
+        player2.name = "player2";
     }
 
     select(element, row, column) {
@@ -228,7 +228,7 @@ class Player {
 }
 
 const player1 = new Player('default', 'red');
-const player2 = new Player('cpu', 'black');
+const player2 = new Player('player2', 'black');
 const game = new Game(player1);
 player1.name = game.nameValue;
 // GAMEBOARD
@@ -305,6 +305,7 @@ document.querySelector('.startButton').addEventListener('click', e => {
 })
 //====================================================================
 
+//=========================================================================
 // GAME OVER MODAL
 const gameOverModal = document.querySelector('.gameOverModal');
 document.querySelector('.playAgain').addEventListener('click', e => {
